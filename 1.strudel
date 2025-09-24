@@ -1,0 +1,36 @@
+samples('github:konrad1001/strudel')
+
+setcpm(120/4)
+
+const energy = (mouseX.segment(2).range(0.2, slider(1.2, 1.2, 8)))
+
+const bass = "d1 e1 f1 e1"
+
+const notes = [
+  "{a3 d4 ~}%2",
+  "{g3 b3 ~}%2",
+  "{c3 f4 ~}%2", 
+  "{a3 e4 ~}%2"
+]
+
+$DRUMS: stack(
+  s("sbd!4").gain(slider(1)),
+  s("hh!8").lpf(1400)
+)
+  ._scope()
+
+
+$BASS: note(bass).slow(4)
+  .lpf(5000)
+  .postgain(10)
+._pianoroll()
+
+
+$NOTES: note(pick("<0!8 1!8 2!8 3!8>", notes)).fast(8)
+  .lpf(slider(500, 500, 3000))
+  // .compressor("-20:20:10:.002:.02")
+  .off(1/16, x=>x)
+  .postgain(energy)
+._punchcard()
+
+$VOCALS: s("female").loop(1)._scope()
