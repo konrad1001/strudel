@@ -1,0 +1,37 @@
+samples('github:konrad1001/strudel')
+samples({
+  female: 'female-vocal-soul-chop.wav'
+}, 'github:konrad1001/strudel')
+
+// Set tempo
+setCpm(140/4)
+
+// Choosing a drumbank
+const dbank = "tr909"
+
+// Highhat
+_$:s("hh!8").gain(.5)
+
+
+// Explicitly specify the structure
+_$:s("bd").struct("{1 0!2 1 0 1 0!2}%8").bank(dbank)
+
+// Or use beat("a, b", x) to specify onbeats a and b in x time. a, b < x
+_$:s("sd").beat("0 8 10", 16).bank(dbank)._punchcard()
+// Replace bd with euclidean rhythms. Using geometry to describe a rhythmic pattern
+// "bd(number of hits in cycle, beats)" bd(4, 16) will evenly distribute 4 beats across 16. 
+$: s("bd(5, 16)").bank(dbank)._punchcard()
+// Cool effect, sometimes (1 in 10), apply the ply function, which repeats the event the given number of times.
+// | is the choose operator
+_$:s("hh!8").gain(.5).sometimesBy(.1, x => x.ply("2"))
+
+// Or every x cycles. <- This doubles all beats in the chosen cycle, which is not quite right, would like to double only the first
+_$:s("hh!8").gain(.5).every(4, x => x.ply("2"))._punchcard()
+// Specifying this explicitly
+$: s("white!7 white*2").decay(sine.fast(2).mul(.2)).gain(.8)._punchcard()
+
+// Interesting idea, occasionaly pick a different sound from the soundbank to add some variation
+$:s("sd").beat("0 8 10", 16).sometimesBy(.4, x => x.n(1)).bank(dbank)._punchcard()
+// Use ribbon to take a subsection of a beat and loop it over. Useful for making regular beats out of randomness
+// degradeBy slider set to in0.9rease frequency of this the lower the number. (0.4 is good)
+$:s("cp!16".degradeBy(slider(0.4, 0, 1, .1)).ribbon(20,1)).gain(.2)._punchcard()
