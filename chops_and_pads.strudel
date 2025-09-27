@@ -1,0 +1,26 @@
+samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
+samples({
+  female: 'female-vocal-soul-chop.wav'
+}, 'github:konrad1001/strudel')
+
+setCpm(150/4)
+
+const drumbank = "yamahatg33"
+
+// $: s("pink!16").degradeBy(.2).ribbon(2,1).decay(.13)
+
+
+// $: s("sd!16").degradeBy(0.4).ribbon(7, 1).lpf(4400).gain(.8).bank(drumbank)
+._punchcard()
+
+// $: s("bd!16").beat("0, 4, 8, 12",16).bank(drumbank).gain(.7)
+
+$: s("breaks/2").n(3).fit().scrub(irand(8).div(8).seg(8)).ribbon(4, 2).gain(1.5).phaser(.2)
+  ._punchcard()
+$: s("swpad").scrub(irand(8).div(8).seg(8)).ribbon(4, 2).speed(1.0).gain(2.0).phaser(.4)
+._scope()
+$: s("swpad").n(2).lpf(1000).phaser(.8).gain(1.8)
+._scope()
+$: s("female").echo(4, 1/8, .8).slow(4).gain(2.9).phaser(.8)
+  ._scope()
