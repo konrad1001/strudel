@@ -1,0 +1,63 @@
+samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
+samples({
+  female: 'female-vocal-soul-chop.wav'
+}, 'github:konrad1001/strudel')
+
+setCpm(120/4)
+
+const drumbank = "yamahatg33"
+
+$:note("[g2, d]").slow(2).sound("gm_synth_strings_1").n(4)
+  .lpf(sine.range(600, 1200).slow(4))
+  // .vowel("e")
+  .tremolo(8).tremolodepth(.3)
+  .phaser(.1)
+  .postgain(3.9)
+
+._scope()
+_$:s("supersaw").attack(0.5).decay(0.8).sustain(0.6).release(2)
+.lpf(sine.range(300, 800).slow(4))
+  .shape(0.3)
+  .room(0.9).roomsize(8).delay(0.25)
+  .phaser(0.5)
+  .duckorbit(0.7)
+  // .pan(sine.range(-0.5, 0.5).slow(8))
+._scope()
+// -- DRUMS
+const d_kick = s("bd").beat("0, 2", 4).gain(.5)
+
+const d_hh = s("hh oh hh hh hh oh hh hh").gain(.5).decay(.4)
+
+const d_sd = s("sd").beat("1 3", 4).gain(.5)
+
+const d_clap = s("clap").beat("1 3", 4).gain(.5).room(0.3).roomsize(4)
+
+$DRUMS: stack(
+  d_kick, 
+  d_hh,
+  d_sd,
+  d_clap
+)
+._pianoroll()
+
+
+// -- BASS
+$: note("g@5 c4@2 d4 ~ d4@7".sub(12)).slow(2).sound("gm_electric_bass_finger").n(3)
+  .gain(2.2)
+  ._pianoroll()
+._scope()
+
+// Gm, Dm
+const gm = "[g2, g3, Bb, d]!16"
+const dm = "[d2, d3,f,a]!16"
+
+$: note("~ [g2, g3, Bb, d, f]@3  ~ [d2, d3,f,a,c]@3 ").slow(2).gain(.4).sound("piano")
+  .release(2.0)
+._pianoroll()
+
+$: note(seq(gm, dm)).degradeBy(0.4).ribbon(6,1).slow(2).sound("gm_electric_guitar_muted")
+  .release(1.9)
+  .decay(.2)
+  .lpf(sine.range(600, 1500).slow(8))
+  ._pianoroll()
