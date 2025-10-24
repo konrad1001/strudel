@@ -1,0 +1,45 @@
+samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
+samples({
+  female: 'female-vocal-soul-chop.wav'
+}, 'github:konrad1001/strudel')
+
+setCpm(150/4)
+
+const drumbank = "dr110"
+
+const notes_a = [
+  "{~ f4 Ab4 }%4",
+  "{~ c4 Eb4 }%4",
+  "{~ Db4 f4 }%4"
+]
+
+const notes_b = [
+  "{~ Ab4 c5 }%4",
+  "{~ Eb4 g4 }%4",
+  "{~ f4 Ab4 }%4"
+]
+
+const pattern = "<0!14 1!2 2!16>"
+
+const a = pick(pattern, notes_a)
+const b = pick(pattern, notes_b)
+
+_$:note(a).fast(4).sound("gm_vibraphone").n(2)
+  .lpf(sine.range(500, 1200).slow(8))
+  // .vowel("o")
+  // .vowel("<o@7 u@9>".fast(2))
+._pianoroll()
+
+
+$:s("bd!4").bank(drumbank)
+
+// gm_pad_warm n(5)
+
+_$:s("gm_reverse_cymbal ~@3").n(4).slow(1)
+  .attack(.2)
+  .release(.1)
+  .vowel("a")
+  .postgain(5.0)
+  ._pianoroll()
+._scope()

@@ -1,0 +1,49 @@
+samples("github:switchangel/breaks");
+samples("github:switchangel/pad");
+samples(
+  {
+    female: "female-vocal-soul-chop.wav",
+    sonny: "sonny_terry-_lost_john.wav",
+  },
+  "github:konrad1001/strudel"
+);
+
+setCpm(150 / 4);
+
+const drumbank = "yamahatg33";
+
+const a = s("sonny").scrub(".009:1.00 .02").slow(2);
+const quiet = s("sonny").scrub(".03");
+const aa = s("sonny").scrub(".03");
+const b = s("sonny").scrub(".2:1.02");
+const c = s("sonny").scrub(".6:1.02");
+
+const sonny = cat(aa, aa, aa, aa, b, b, c, c, c, c, c, c)
+  .lpf(sine.range(500, 1200).slow(4))
+  // $:a
+  .scope();
+
+const breaks = s("breaks/2")
+  .n(3)
+  .fit()
+  .scrub(irand(8).div(8).seg(8))
+  .ribbon(4, 2)
+  .gain(1.2)
+  .phaser(0.2);
+
+const hh = s("hh!16").degradeBy(0.2).ribbon(34, 1).decay(0.13)._pianoroll();
+
+// $: s("bd!16").beat("0, 4, 8, 12",16).bank(drumbank)
+const sd = s("sd!16")
+  .degradeBy(0.7)
+  .ribbon(8, 1)
+  .lpf(sine.range(100, 600).slow(8))
+  .gain(0.6)
+  .bank(drumbank)
+  ._punchcard();
+$MAIN: arrange(
+  [2, a],
+  // [4, stack(aa, breaks)],
+  [32, stack(sonny, breaks, hh, sd)]
+  // [32, stack(sonny, breaks, hh)]
+);
